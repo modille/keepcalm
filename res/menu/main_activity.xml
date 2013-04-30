@@ -1,9 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/menu_item_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
+    <item android:id="@+id/menu_item_import_data" android:orderInCategory="10" android:title="@string/import_data"></item>
+    <item android:id="@+id/menu_item_set_location" android:title="@string/set_location" android:orderInCategory="20"></item>
 
 </menu>
