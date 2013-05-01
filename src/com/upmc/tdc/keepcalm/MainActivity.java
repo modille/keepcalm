@@ -110,16 +110,13 @@ public class MainActivity extends FragmentActivity implements
 	public void onNotifiction( String title, String text ) {
 		String ns = Context.NOTIFICATION_SERVICE;
 		NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(ns);
-        int icon = R.drawable.ic_launcher;
-        CharSequence tickerText = title;
-        long when = System.currentTimeMillis();             
-
+        int icon = R.drawable.ic_launcher;           
 
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         if(alarmSound == null){
-              alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        	alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             if(alarmSound == null){
-                alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            	alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             }
         }           
 
@@ -128,23 +125,19 @@ public class MainActivity extends FragmentActivity implements
         	= PendingIntent.getActivity(this, 0, intent, 0);    
 
         NotificationCompat.BigTextStyle bigxtstyle =
-        new NotificationCompat.BigTextStyle();          
+        		new NotificationCompat.BigTextStyle();          
         bigxtstyle.bigText(text);               
         bigxtstyle.setBigContentTitle(title);
-
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
             .setStyle(bigxtstyle)
             .setSmallIcon(icon)
             .setAutoCancel(true)
-
             .setSound(alarmSound)
             .setDeleteIntent(pendingIntent)                     
             .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(), 0));     
 
-
         Notification noti = mBuilder.build();
-
 
         mNotificationManager.notify(1, noti);
 	}
