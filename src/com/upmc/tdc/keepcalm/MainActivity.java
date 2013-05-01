@@ -38,6 +38,8 @@ public class MainActivity extends FragmentActivity implements
 	 */
 	ViewPager mViewPager;
 
+	int notifications = 1;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,14 +102,16 @@ public class MainActivity extends FragmentActivity implements
 				Utils.toastShort( getApplicationContext(), "TODO: add more settings here" );
 				return true;
 			case R.id.menu_item_notification:
-				onNotifiction("Outbreak Detected", "P3N5 outbreak was reported within 5 miles of your area.");
+				onNotifiction("Outbreak Detected",
+						      "P3N5 outbreak was reported within 5 miles of your area.",
+						      "P3N5 outbreak.  See new notification");
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 	}
 	
-	public void onNotifiction( String title, String text ) {
+	public void onNotifiction( String title, String text, String short_text ) {
 		String ns = Context.NOTIFICATION_SERVICE;
 		NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(ns);
         int icon = R.drawable.ic_launcher;           
@@ -130,6 +134,8 @@ public class MainActivity extends FragmentActivity implements
         bigxtstyle.setBigContentTitle(title);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+        	.setContentTitle(title)
+        	.setContentText(short_text)
             .setStyle(bigxtstyle)
             .setSmallIcon(icon)
             .setAutoCancel(true)
@@ -139,7 +145,7 @@ public class MainActivity extends FragmentActivity implements
 
         Notification noti = mBuilder.build();
 
-        mNotificationManager.notify(1, noti);
+        mNotificationManager.notify(notifications++, noti);
 	}
 	
 	@Override
