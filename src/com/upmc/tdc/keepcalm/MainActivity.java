@@ -2,9 +2,16 @@ package com.upmc.tdc.keepcalm;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -92,11 +99,56 @@ public class MainActivity extends FragmentActivity implements
 			case R.id.menu_item_settings:
 				Utils.toastShort( getApplicationContext(), "TODO: add more settings here" );
 				return true;
+			case R.id.menu_item_notification:
+				onNotifiction("Outbreak Detected", "P3N5 outbreak was reported within 5 miles of your area.");
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	public void onNotifiction( String title, String text ) {
+		String ns = Context.NOTIFICATION_SERVICE;
+		NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(ns);
+        int icon = R.drawable.ic_launcher;
+        CharSequence tickerText = title;
+        long when = System.currentTimeMillis();             
 
+
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        if(alarmSound == null){
+              alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            if(alarmSound == null){
+                alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            }
+        }           
+
+        Intent intent = new Intent();
+        PendingIntent pendingIntent 
+        	= PendingIntent.getActivity(this, 0, intent, 0);    
+
+        NotificationCompat.BigTextStyle bigxtstyle =
+        new NotificationCompat.BigTextStyle();          
+        bigxtstyle.bigText(text);               
+        bigxtstyle.setBigContentTitle(title);
+
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+            .setStyle(bigxtstyle)
+            .setSmallIcon(icon)
+            .setAutoCancel(true)
+
+            .setSound(alarmSound)
+            .setDeleteIntent(pendingIntent)                     
+            .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(), 0));     
+
+
+        Notification noti = mBuilder.build();
+
+
+        mNotificationManager.notify(1, noti);
+	}
+	
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
